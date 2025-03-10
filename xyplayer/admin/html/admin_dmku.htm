@@ -1,0 +1,712 @@
+
+<?php include('../dmku/save/data.php'); include "block_header.htm";
+
+if (!class_exists('PDO')){
+
+    die("<br><font style='color:red;'>   弹幕数据库链接失败,请安装php的pdo扩展！</font></br>");  
+}
+
+?>
+
+<head>
+<style>
+		.layui-elem-field {
+			border-color: #00bcd4;
+		}
+
+		.width {
+			width: 120px !important;
+			text-align: center;
+		}
+
+		.long {
+			width: 300px !important;
+			text-align: center;
+		}
+
+		.smt {
+			width: 75px !important;
+			text-align: center;
+		}
+
+		.sm {
+			width: 50px !important;
+			text-align: center;
+		}
+
+		
+
+.layui-form-pane .layui-form-label {
+			padding: 8px 5px;
+		}
+
+
+.layui-tab-title {
+    position: relative;
+    left: 0;
+    background: #e6f2fb;
+    display: table;
+    width: 99%;
+    white-space: nowrap;
+    font-size: 0;
+    transition: all .2s;
+    -webkit-transition: all .2s;
+    margin-left: 10px;
+	color:#337ab7;
+	height: auto;
+	border: 0; 
+	
+}
+.layui-tab-title li{line-height:32px;min-width:auto;font-size: 12px;}
+.layui-tab-title .layui-this {
+    color: #fff;
+    background: #7b9cb8;
+	font-size: 12px;
+}
+.layui-tab-title .layui-this:after {
+    position: absolute;
+    left: 0;
+    top: 0;
+    content: '';
+    width: 100%;
+    height: auto;
+    border: 0px;
+    border-radius:0px;
+    box-sizing: border-box;
+    pointer-events: none;
+	font-size: 12px;
+}
+.layui-tab {
+    margin: 6px 0;
+
+}
+	</style>
+</head>
+
+<body>
+
+    <br>
+    <div class="x-nav">
+            <span class="layui-breadcrumb">
+                <a href="">首页</a>
+                <a href="">插件管理</a>
+                 <a href=""><cite>弹幕播放器</cite></a>
+            </span>
+             <button style="margin-left:1em;line-height:1.6em;margin-top:3px;float:right"  class="layui-btn layui-btn-sm"  title="刷新" onclick="location.replace(location.href)"><i class="layui-icon  layui-icon-refresh"></i></button>
+
+     </div>
+   </br>
+         
+
+	<form class="layui-form layui-form-pane" name="configform" id="configform">
+		<div class="layui-tab"  lay-filter="dmku" overflow>
+		
+			<ul class="layui-tab-title">
+				<li class="layui-this">基本设置</li>
+				<li class="">广告设置</li>
+				<li class="">弹幕列表</li>
+				<li class="">举报列表</li>
+			</ul>
+			<div class="layui-tab-content">
+				<div class="layui-tab-item layui-show" name="基本设置">
+				<button type="button" class="layui-btn layui-btn-disabled" style="margin-bottom:5px;color: #546c71;background: #e6eaec;border: 0;"><i class="layui-icon layui-icon-rss" style="color: #1E9FFF;"></i> 弹幕功能仅支持弹幕播放器，需要在播放器设置里使用弹幕播放器</button>
+					<div class="layui-form-item">
+						<label class="layui-form-label">弹幕开关</label>
+						<div class="layui-input-block">
+						<input type="checkbox" name="yzm[danmuon]" lay-skin="switch" lay-filter="switchTest" lay-text="ON|OFF" <?php  echo $yzm['danmuon']==="on"?"checked":""; ?>>
+							<div class="layui-unselect layui-form-switch" lay-skin="_switch"><em>Off</em><i></i></div>
+						</div>
+					</div>
+                                
+                                        <div class="layui-form-item">
+						<label class="layui-form-label">标题开关</label>
+						<div class="layui-input-block">
+						<input type="checkbox" name="yzm[title]" lay-skin="switch" lay-filter="switchTest" lay-text="ON|OFF" <?php echo $yzm['title']==="on"?"checked":""; ?>>
+							<div class="layui-unselect layui-form-switch" lay-skin="_switch"><em>Off</em><i></i></div>
+						
+                                               
+                                                
+                                                </div>
+					</div>
+                                
+                                
+                                     <div class="layui-form-item">
+						<label class="layui-form-label">时间开关</label>
+						<div class="layui-input-inline">
+                                                 <select name="yzm[time]" lay-verify="required" class="layui-input-block">
+                                                 <option value="0" <?php echo $yzm['time']== "0"?"selected":"";?>>关闭</option>
+						<option value="1" <?php echo $yzm['time']== "1"?"selected":"";?>>全屏显示</option>
+						<option value="2" <?php echo $yzm['time']== "2"?"selected":"";?>>自动隐藏</option>
+                                               
+		
+						</select>
+                                                
+                                                
+                                                </div>
+                                                
+                                                <div class="layui-form-mid layui-word-aux">自动隐藏是指用户停止操作后自动隐藏</div>
+                                
+					</div>
+                                
+                                
+					<div class="layui-form-item" style="">
+						<label class="layui-form-label">弹幕权限</label>
+						<div class="layui-input-inline">
+							<select name="yzm[ads][set][group]" lay-verify="required">
+								<option value="1" <?php echo $yzm['ads']['set']['group']== "1"?"selected":"";?>>无限制</option>
+								<option value="2" <?php echo $yzm['ads']['set']['group']== "2"?"selected":"";?>>注册会员</option>
+		
+							</select>
+						</div>
+						<div class="layui-form-mid layui-word-aux">限制是否只有注册会员才可以发弹幕</div>
+					</div>
+                                
+                                              <div class="layui-form-item">
+						<label class="layui-form-label">随机人数</label>
+						<div class="layui-input-inline">
+                                    
+                                                        <input type="text" name="yzm[count]" value="<?php echo $yzm['count'] ?>" size="30" class="layui-input upload-input" placeholder="关闭">
+						</div>
+						<div class="layui-form-mid layui-word-aux">随机在线人数，例如："1-100"，设置为空时关闭</div>
+					</div>
+                                
+                                
+                                
+                                         <div class="layui-form-item">
+						<label class="layui-form-label">主题颜色</label>
+						<div class="layui-input-inline">
+							<input type="text" name="yzm[color]" value="<?php echo $yzm['color'] ?>" size="30" class="layui-input upload-input" placeholder="颜色代码">
+						</div>
+						<div class="layui-form-mid layui-word-aux">颜色代码 例如：#00a1d6</div>
+					</div>
+                                
+                             
+                                
+                                
+                                        <div class="layui-form-item">
+						<label class="layui-form-label">文字颜色</label>
+						<div class="layui-input-inline">
+							<input type="text" name="yzm[font_color]" value="<?php echo $yzm['font_color'] ?>" size="30" class="layui-input upload-input" placeholder="颜色代码">
+						</div>
+						<div class="layui-form-mid layui-word-aux">颜色代码 例如：#fff</div>
+					</div>
+                                
+                                
+                                         <div class="layui-form-item">
+						<label class="layui-form-label">背景颜色</label>
+						<div class="layui-input-inline long">
+							<input type="text" name="yzm[background_color]" value="<?php echo $yzm['background_color'] ?>" size="30" class="layui-input upload-input" placeholder="颜色代码">
+						</div>
+						<div class="layui-form-mid layui-word-aux">环形渐变颜色,以逗号隔开,至少需要两种颜色,例如：#8B008B 0%,#00000A 80%</div>
+					</div>
+                                
+                                
+                                         <div class="layui-form-item">
+						<label class="layui-form-label">背景动画</label>
+						<div class="layui-input-inline long">
+							<input type="text" name="yzm[background_url]" value="<?php echo $yzm['background_url'] ?>" size="30" class="layui-input upload-input" placeholder="图片地址">
+						</div>
+						<div class="layui-form-mid layui-word-aux">例如：img/20200519223109.gif</div>
+					</div>
+                                
+                                         <div class="layui-form-item">
+						<label class="layui-form-label">视频封面</label>
+						<div class="layui-input-inline long">
+							<input type="text" name="yzm[pic]" value="<?php echo $yzm['pic'] ?>" size="30" class="layui-input upload-input" placeholder="图片地址">
+						</div>
+						<div class="layui-form-mid layui-word-aux">例如：img/20200519222902.jpg</div>
+					</div>
+                                
+                                
+                                
+					<div class="layui-form-item">
+						<label class="layui-form-label">LOGO</label>
+						<div class="layui-input-inline long">
+							<input type="text" name="yzm[logo]" value="<?php echo $yzm['logo'] ?>" size="30" class="layui-input upload-input" placeholder="图片地址">
+						</div>
+						<div class="layui-form-mid layui-word-aux">例如：https://www.xymov.net/logo.png</div>
+					</div>
+					<div class="layui-form-item" style="display:none;">
+						<label class="layui-form-label"></label>
+						<div class="layui-input-inline">
+							<input type="text" name="yzm[trytime]" value="<?php echo $yzm['trytime'] ?>" size="30" class="layui-input upload-input" placeholder="">
+						</div>
+						<div class="layui-form-mid layui-word-aux"></div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">加载等待时间</label>
+						<div class="layui-input-inline">
+							<input type="text" name="yzm[waittime]" value="<?php echo $yzm['waittime'] ?>" size="30" class="layui-input upload-input" placeholder="单位/秒">
+						</div>
+						<div class="layui-form-mid layui-word-aux">加载画面等待时间</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">弹幕发送间隔</label>
+						<div class="layui-input-inline">
+							<input type="text" name="yzm[sendtime]" value="<?php echo $yzm['sendtime'] ?>" size="30" class="layui-input upload-input" placeholder="单位/秒">
+						</div>
+						<div class="layui-form-mid layui-word-aux">防止恶意发布弹幕</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">弹幕礼仪链接</label>
+						<div class="layui-input-inline long">
+							<input type="text" name="yzm[dmrule]" value="<?php echo $yzm['dmrule'] ?>" size="30" class="layui-input upload-input" placeholder="链接地址">
+						</div>
+						<div class="layui-form-mid layui-word-aux">弹幕框右边弹幕礼仪按钮的链接地址</div>
+					</div>
+                                    
+					<div class="layui-form-item">
+						<label class="layui-form-label">禁用关键词</label>
+						<div class="layui-input-inline long">
+							<input type="text" name="yzm[pbgjz]" value="<?php echo $yzm['pbgjz'] ?>" size="30" class="layui-input upload-input" placeholder="输入关键字以" ,"隔开">
+						</div>
+						<div class="layui-form-mid layui-word-aux">输入关键字以","隔开</div>
+					</div>
+				
+                                   <div class="layui-form-item">
+						<label class="layui-form-label">自定义样式</label>
+						<div class="layui-input-inline long">
+                                                    
+                                              <textarea  name="yzm[style]" class="layui-textarea"><?php echo  $yzm['style'] ?></textarea>
+   
+						</div>
+                                                <div class="layui-form-mid layui-word-aux">自定义样式,例子(自定义logo位置)：".yzmplayer-logo{right: 5% !important;top: 5% !important;}"<br>备注：left:左边距,right:右边距,top:顶边距,bottom:底边距</div>
+					</div>
+                                
+                                
+                                
+					<div class="layui-form-item">
+						<div>
+							<input name="edit" type="hidden" value="1" />
+							<button class="layui-btn" type="button" lay-submit="" lay-filter="save" >保 存</button>
+						</div>
+					</div>
+				</div>
+				<div class="layui-tab-item" name="广告设置">
+					<div class="layui-form-item">
+						<label class="layui-form-label">广告开关</label>
+						<div class="layui-input-block">
+							<input type="checkbox" name="yzm[ads][state]" lay-skin="switch" lay-filter="switchTest" lay-text="ON|OFF" <?php echo $yzm['ads']['state']??''=="on"?"checked":""; ?>>
+							<div class="layui-unselect layui-form-switch" lay-skin="_switch"><em>Off</em><i></i></div>
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">广告类型</label>
+						<div class="layui-input-inline">
+							<input type="radio" name="yzm[ads][set][state]" value="1" title="视频" <?php echo $yzm['ads']['set']['state']=="1"?"checked":""; ?>>
+							<input type="radio" name="yzm[ads][set][state]" value="2" title="图片" <?php echo $yzm['ads']['set']['state']=="2"?"checked":""; ?>>
+																									
+																										
+																									
+						</div>
+					</div>
+
+					<div class="layui-form-item">
+						<label class="layui-form-label">图片广告时间</label>
+						<div class="layui-input-inline">
+							<input type="text" name="yzm[ads][set][pic][time]" value="<?php echo $yzm['ads']['set']['pic']['time'] ?>" size="30" class="layui-input upload-input" placeholder="单位/秒">
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">图片广告内容</label>
+						<div class="layui-input-inline long">
+							<input type="text" name="yzm[ads][set][pic][img]" value="<?php echo $yzm['ads']['set']['pic']['img'] ?>" size="30" class="layui-input upload-input" placeholder="图片地址">
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">图片广告链接</label>
+						<div class="layui-input-inline long">
+							<input type="text" name="yzm[ads][set][pic][link]" value="<?php echo $yzm['ads']['set']['pic']['link'] ?>" size="30" class="layui-input upload-input" placeholder="点击链接地址">
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">视频广告内容</label>
+						<div class="layui-input-inline long">
+							<input type="text" name="yzm[ads][set][vod][url]" value="<?php echo $yzm['ads']['set']['vod']['url'] ?>" size="30" class="layui-input upload-input" placeholder="视频地址">
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">视频广告链接</label>
+						<div class="layui-input-inline long">
+							<input type="text" name="yzm[ads][set][vod][link]" value="<?php echo $yzm['ads']['set']['vod']['link'] ?>" size="30" class="layui-input upload-input" placeholder="点击链接地址">
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">暂停广告开关</label>
+						<div class="layui-input-block">
+							<input type="checkbox" name="yzm[ads][pause][state]"  lay-skin="switch" lay-filter="switchTest" lay-text="ON|OFF" <?php echo $yzm['ads']['pause']['state']??''=="on"?"checked":""; ?>>
+																																				
+																												
+																																				
+							<div class="layui-unselect layui-form-switch" lay-skin="_switch"><em>Off</em><i></i></div>
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">暂停图片</label>
+						<div class="layui-input-inline long">
+							<input type="text" name="yzm[ads][pause][pic]" value="<?php echo $yzm['ads']['pause']['pic'] ?>" size="30" class="layui-input upload-input" placeholder="图片地址">
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">暂停图片链接</label>
+						<div class="layui-input-inline long">
+							<input type="text" name="yzm[ads][pause][link]" value="<?php echo $yzm['ads']['pause']['link'] ?>" size="30" class="layui-input upload-input" placeholder="点击链接地址">
+						</div>
+					</div>
+					<div class="layui-form-item center">
+						<div>
+							<input name="edit" type="hidden" value="1" />
+							<button  class="layui-btn" type="button" lay-submit="" lay-filter="save" >保 存</button>
+							
+						</div>
+					</div>
+				</div>
+
+			
+				<div class="layui-tab-item" name="弹幕列表">
+				<table class="layui-hide" id="dmlist" lay-filter="dmlist"></table>
+				</div>
+
+				<div class="layui-tab-item" name="举报列表">
+					<table class="layui-hide" id="report" lay-filter="report"></table>
+				</div>
+
+						
+					
+				
+			</div>
+		</div>
+		
+	</form>
+        
+
+    
+    
+	<script type="text/html" id="listbar">
+		<a class="layui-btn layui-btn-xs" lay-event="dmedit">编辑</a>
+		<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+	</script>
+    
+        <script type="text/html" id="listTool">
+            <div class="layui-btn-group">
+		<a class="layui-btn layui-btn-sm" lay-event="edit"><i class="layui-icon  layui-icon-edit"></i></a>
+		<a class="layui-btn layui-btn-danger layui-btn-sm" lay-event="del"><i class="layui-icon  layui-icon-delete"></i></a>
+            </div>    
+                <div class="layui-input-inline">
+		<input class="layui-input" id="textdemo" placeholder="请输入视频ID或弹幕关键字">
+		</div>
+               <button  class="layui-btn" type="button"  lay-submit="search_submits" type="button" lay-filter="reloadlst_submit" >搜索</button>
+	
+        </script>
+    
+	<script type="text/html" id="reportbar">
+		<a class="layui-btn layui-btn-xs" lay-event="edit">误报</a>
+		<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+	</script>
+
+    <script type="text/html" id="reportTool">
+   
+    <a class="layui-btn layui-btn-danger layui-btn-sm" lay-event="del" title="删除"><i class="layui-icon  layui-icon-delete"></i></a>
+ 
+</script>
+    
+ 
+    
+    
+	<script type="text/template" id="bondTemplateList">
+		<div class="layui-card-body" style="padding: 15px;">
+        <form class="layui-form" lay-filter="component-form-group" id="submits" onsubmit="return false">
+            <div class="layui-row layui-col-space10 layui-form-item">
+                <input type="hidden" name="cid" value="{{ d.cid }}">
+                <div class="layui-col-lg5">
+                    <label class="layui-form-label">弹幕ID：</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="id" placeholder="请输入名称" autocomplete="off"
+                               lay-verify="required" class="layui-input"
+                               value="{{ d.id?d.id:'' }}" {{# if(d.id){ }}disabled{{# } }}>
+                    </div>
+                </div>
+                <div class="layui-col-lg5">
+                    <label class="layui-form-label">颜色：</label>
+  						<div class="layui-input-block">
+							<div class="layui-input-inline" style="width: 120px;">
+								<input type="text" name="color" placeholder="请选择颜色" class="layui-input" id="test-form-input" value="{{ d.color?d.color:'' }}">
+							</div>
+						<div class="layui-inline" style="left: -11px;">
+						<div id="test-form"></div>
+					</div>
+				</div>
+                </div>
+                <div class="layui-form-item layui-form-text">
+                    <label class="layui-form-label">弹幕内容</label>
+                    <div class="layui-input-block">
+                    <textarea name="text" placeholder="请输入内容" class="layui-textarea" lay-verify="required">{{ d.text ? d.text:''}}</textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-submit="" lay-filter="bond_sumbit">提交</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</script>
+
+         
+<script>  
+    
+  api="../dmku/";
+
+  layui.use(['laydate', 'laypage', 'layer', 'table', 'carousel', 'upload', 'element','colorpicker', 'slider'], function(){
+    var laydate = layui.laydate //日期
+    ,laypage = layui.laypage //分页
+    ,layer = layui.layer //弹层
+    ,table = layui.table //表格
+   
+    //,carousel = layui.carousel //轮播
+    //,upload = layui.upload //上传
+    ,element = layui.element //元素操作
+    ,slider = layui.slider
+    ,form = layui.form
+    ,laytpl = layui.laytpl
+    ,admin = layui.admin,colorpicker = layui.colorpicker; 
+  
+    element.on('tab(dmku)', function(data){
+      if(data.index===2){
+           table.reload('dmlist', { url:  api+'?ac=list' });
+    
+     }else if(data.index===3){
+          table.reload('report', { url:  api+'?ac=reportlist' });
+    }
+
+});
+  
+  
+     //监听提交
+      form.on('submit(save)', function(data) {
+                        
+        //发异步，把数据提交给php    
+         x_admin_post( "admin_dmku_save.php", $('#configform').serialize()); 
+         return false;            
+               
+      })
+  
+  
+  
+   ///执行一个 table 实例
+    table.render({
+      elem: '#dmlist'
+      ,height: 600
+      ,url: api+'?ac=list' //数据接口
+      ,title: '用户表'
+      ,page: true //开启分页
+     ,toolbar: '#listTool' //开启工具栏，此处显示默认图标，可以自定义模板，详见文档
+     //,totalRow: true //开启合计行
+      ,cols: [[ //表头
+        {type: 'checkbox', fixed: 'left'},
+        {field: 'cid', title: 'ID',value:[4], width:60, align:'center',fixed: 'left', totalRowText: '合计：'}
+        ,{field: 'id', title: '视频ID', width:100}
+	 ,{field: 'user', title: '发布者', width:100}
+        ,{field: 'text', title: '弹幕内容', width: 300}
+         ,{field: 'type', title: '类型', width: 80}
+        ,{field: 'color', title: '弹幕颜色', width:150}
+       ,{field: 'videotime', title: '时间点', width: 90}
+        ,{field: 'ip', title: '发送IP', width:90} 
+        ,{field: 'time', title: '发送时间', width: 110}
+        ,{field: 'size', title: '弹幕大小', width: 90}
+        ,{fixed: 'right',title: '操作', width: 120, align:'center', toolbar: '#listbar'}
+      ]]
+    });
+    table.render({
+      elem: '#report'
+      ,height: 600
+      ,url:  api+'?ac=reportlist' //数据接口
+      ,title: '用户表'
+      ,page: true //开启分页
+       ,toolbar: '#reportTool' //开启工具栏，此处显示默认图标，可以自定义模板，详见文档
+      //,totalRow: true //开启合计行
+      ,cols: [[ //表头
+         {type: 'checkbox', fixed: 'left'},
+         {field: "cid", title: 'ID',value:[4], width:60, align:'center',fixed: 'left',fixed: 'left', totalRowText: '合计：'}
+        ,{field: "id", title: '视频ID', width:100}
+        ,{field: "text", title: '弹幕内容', width: 300}
+        ,{field: "type", title: '举报类型', width:100} 
+        ,{field: "ip", title: '发送IP', width:100} 
+        ,{field: "time", title: '发送时间', width: 110}
+       ,{fixed: 'right',title: '操作', width: 120, align:'center', toolbar: '#reportbar'}
+      ]]
+    });
+  table.on('toolbar(dmlist)', function(obj){
+
+      var checkStatus = table.checkStatus(obj.config.id)
+      ,data = checkStatus.data; //获取选中的数据
+     if(data.length === 0){
+            layer.msg('请选择一行');
+            return;
+   }
+      switch(obj.event){
+        case 'add':
+          layer.msg('添加');
+        break;
+        case 'edit':
+          if(data.length === 0){
+            layer.msg('请选择一行');
+          } else if(data.length > 1){
+            layer.msg('只能同时编辑一个');
+          } else {
+               editdm(data[0]);
+          }
+        break;
+        case 'del':
+          if(data.length === 0){
+            layer.msg('请选择一行');
+         } else {
+          var dmid=new Array();
+          data.forEach(function (tm) {dmid.push(tm.cid); } );
+          layer.confirm('真的删除选择行么', function(index){
+          delid (dmid.join());
+          table.reload('dmlist', { url:  api+'?ac=list' });
+           table.reload('report', { url:  api+'?ac=reportlist' });
+          layer.close(index);
+        
+        });
+             
+          }
+        break;
+      };
+    });
+    
+    table.on('toolbar(report)', function(obj){
+
+      var checkStatus = table.checkStatus(obj.config.id)
+      ,data = checkStatus.data //获取选中的数据
+      ,layEvent = obj.event; //获得 lay-event 对应的值
+
+    if(data.length === 0){
+            layer.msg('请选择一行');
+            return;
+    }
+   var dmid=new Array();
+   data.forEach(function (tm) {dmid.push(tm.cid); } );
+   
+     if(layEvent === 'del'){
+        layer.confirm('真的删除所选举报列表么', function(index){
+          delid (dmid.join());
+          table.reload('dmlist', { url:  api+'?ac=list' });
+          layer.close(index);
+        });
+      }else if(layEvent === 'edit'){
+   
+        layer.confirm('真的移除所选举报列表么', function(index){
+          delreport (dmid.join());
+          table.reload('report', { url:  api+'?ac=reportlist' });
+          layer.close(index);
+        });
+        }
+    });
+    
+
+    //监听行工具事件
+    table.on('tool(dmlist)', function(obj){ //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
+      var data = obj.data //获得当前行数据
+      ,layEvent = obj.event; //获得 lay-event 对应的值
+      if(layEvent === 'detail'){
+        layer.msg('查看操作');
+      } else if(layEvent === 'del'){
+        layer.confirm('真的删除行么', function(index){
+          obj.del(); //删除对应行（tr）的DOM结构
+          var dmid= data.cid;
+          delid (dmid);
+          console.log(data.cid);
+           layer.close(index);
+          //向服务端发送删除指令
+        });
+      } else if(layEvent === 'dmedit'){
+   
+             editdm(data);
+    }
+    });
+    table.on('tool(report)', function(obj){ //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
+      var data = obj.data //获得当前行数据
+      ,layEvent = obj.event; //获得 lay-event 对应的值
+      if(layEvent === 'detail'){
+        layer.msg('查看操作');
+      } else if(layEvent === 'del'){
+        layer.confirm('真的删除行么', function(index){
+          obj.del(); //删除对应行（tr）的DOM结构
+          var dmid= data.cid;
+          delid (dmid);
+          layer.close(index);
+        });
+      } else if(layEvent === 'edit'){
+          layer.confirm('移除举报么', function(index){
+          obj.del(); 
+          var dmid= data.cid;
+          delreport (dmid);
+          layer.close(index);
+        });
+      }
+   });
+     
+   
+  
+   form.on('submit(bond_sumbit)', function (data) {
+           layer.msg('正在提交',{time:5000000});
+           $.ajax({
+               type : 'POST',
+               data:data.field,
+               url : api+'?ac=edit',  
+               success : function (data) {
+                   layer.msg('保存完成',{time:1000});
+               }
+          });
+       })
+       form.on('submit(reloadlst_submit)', function (data) {
+            var key = $('#textdemo').val().trim();
+             if(key===''){
+                 table.reload('dmlist', { url:  api+'?ac=list' });
+           }else{
+                table.reload('dmlist', { url:  api+'?ac=so&key='+key });
+         }  
+       });
+   
+    function editdm(data){
+                // data.list = layui.data('bondTemplateList').list;
+                 
+                var content = $("#bondTemplateList").html();
+                laytpl(content).render(data, function (string) {
+                  layer.open({
+                      type: 1,
+                      title: "修改弹幕",
+                      area: ['800px', '350px'], //宽高
+                      content: string
+                  });
+                  colorpicker.render({
+                      elem: '#test-form'
+                      //,color: '#1c97f5'
+                      ,color: 'rgb(68,66,66)'
+                      ,format: 'rgb' //默认为 hex
+                         ,done: function(color){
+                            $('#test-form-input').val(color);
+                      }
+                    });
+  
+              });
+        
+    }
+   
+      function delreport (id) {$.ajax({url:  api+"?ac=del&type=report&id="+id,success: function(data){ layer.msg('移除成功',{time:1000});}});}
+      function delid (id) {$.ajax({url:  api+"?ac=del&type=list&id="+id,success: function(data){ layer.msg('删除完成',{time:1000});}});}
+   });
+  
+
+</script>
+            
+</body>
+
+</html>
+
+
+
+

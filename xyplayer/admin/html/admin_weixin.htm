@@ -1,0 +1,196 @@
+<?php include '../save/config.php';include "block_header.htm";?>
+
+    <body>
+        <div class="x-body">
+            <form class="layui-form">
+
+
+                <div class="layui-form-item">
+                    <label for="username" class="layui-form-label">
+                        功能开关:
+                    </label>
+                    <div class="layui-input-inline">
+                        <select name="PLUS_WEIXIN_OFF" lay-filter="province">							 
+                            <?php foreach (array("关闭", "启用") as $key => $val): ?>							 							 
+                                <option value="<?php echo $key ?>"  <?php echo ($CONFIG['plus']['weixin']['off'] == $key) ? "selected" : ''; ?>><?php echo $val ?></option>	   
+<?php endforeach; ?> 			         
+                        </select>
+
+                      </div>
+
+                      <div class="layui-form-mid layui-word-aux">
+                        选择是否开启微信公共平台功能。
+                    </div>
+
+                    </div>
+
+
+
+
+                <div class="layui-form-item">
+                    <label for="username" class="layui-form-label">
+                        微信名称:
+                    </label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="PLUS_WEIXIN_TITLE" autocomplete="off"  value="<?php echo $CONFIG['plus']['weixin']['title']; ?>" class="layui-input" >		
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">
+                        例如："星源影视""
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label for="username" class="layui-form-label">
+                        微信域名:
+                    </label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="PLUS_WEIXIN_API" autocomplete="off" value="<?php echo $CONFIG['plus']['weixin']['api']; ?>" class="layui-input" >		
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">
+                        设置一个能在微信正常使用的域名，后面无需加"/", 示例："http://parse.xymov.net" 
+                    </div>
+                 </div>
+
+
+                <div class="layui-form-item">
+                    <label for="username" class="layui-form-label">
+                        微信令牌:
+                    </label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="PLUS_WEIXIN_TOKEN" autocomplete="off" placeholde="weixin" value="<?php echo $CONFIG['plus']['weixin']['token']; ?>" class="layui-input" >		
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">
+                        必须与微信公众平台的token设置一样。
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label for="username" class="layui-form-label">
+                        默认封面:
+                    </label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="PLUS_WEIXIN_PIC" autocomplete="off" value="<?php echo $CONFIG['plus']['weixin']['pic']; ?>" class="layui-input" >		
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">
+                        发送消息时的默认图片,示例：“http://parse.xymov.net/plus/weixin/play.jpg"
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label for="username" class="layui-form-label">
+                        留言地址:
+                    </label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="PLUS_WEIXIN_BOOK" autocomplete="off" value="<?php echo $CONFIG['plus']['weixin']['book']; ?>" class="layui-input" >		
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">
+                        设置一个留言本地址, 用来接受反馈信息，示例：“http://www.xymov.net/book.htm"
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label for="username" class="layui-form-label">
+                        展示数目:
+                    </label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="PLUS_WEIXIN_NUM" autocomplete="off" value="<?php echo $CONFIG['plus']['weixin']['num']; ?>" class="layui-input" >		
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">
+                        建议不要设置过大,推荐设置5,不然微信可能判断服务超时。
+                    </div>
+                </div>
+
+
+                <div class="layui-form-item">
+                    <label for="username" class="layui-form-label">
+                        域名防红:
+                    </label>
+                    <div class="layui-input-inline">
+                        <select name="PLUS_WEIXIN_JMP_OFF" lay-filter="province">							 
+                            <?php foreach (array("关闭", "启用") as $key => $val): ?>							 							 
+                                <option value="<?php echo $key ?>"  <?php echo ($CONFIG['plus']['weixin']['jmp_off'] == $key) ? "selected" : ''; ?>><?php echo $val ?></option>	   
+<?php endforeach; ?> 			         
+                        </select>
+
+                      </div>
+
+                      <div class="layui-form-mid layui-word-aux">
+                        开启后不直接打开而是引导客户用浏览器打开。
+                    </div>
+
+                    </div>
+ 
+
+
+                <div class="layui-form-item layui-form-text">
+                    <label class="layui-form-label">
+                        关注回复:
+                    </label>
+                    <div class="layui-input-block">
+                        <textarea name="PLUS_WEIXIN_MSG_SEND"  style="height:100px"   class="layui-textarea" value=""><?php echo $CONFIG['plus']['weixin']['msg_send']; ?></textarea>
+                       
+                    </div>
+                </div>
+
+                  
+                <div class="layui-form-item layui-form-text">
+                    <label class="layui-form-label">
+                        无内容时:
+                    </label>
+                    <div class="layui-input-block">
+                        <textarea name="PLUS_WEIXIN_MSG_NOT"  style="height:50px"   class="layui-textarea" value="" ><?php echo $CONFIG['plus']['weixin']['msg_not']; ?></textarea>
+                       
+                    </div>
+                </div>
+                <div class="layui-form-item layui-form-text">
+                    <label class="layui-form-label">
+                        帮助信息:
+                    </label>
+                    <div class="layui-input-block">
+                        <textarea name="PLUS_WEIXIN_MSG_HELP"  style="height:50px"   class="layui-textarea" value=""><?php echo $CONFIG['plus']['weixin']['msg_help']; ?></textarea>
+                       
+
+                        <div class="layui-form-mid layui-word-aux">
+                            注意：服务器地址：<a href="<?php echo $CONFIG['plus']['weixin']['api']; ?>/plus/weixin/"><font color="red"><strong><?php echo $CONFIG['plus']['weixin']['api']; ?>/plus/weixin/</strong></font></a><br>
+                            默认的帮助触发关键词为<font color="red"><strong>帮助</strong></font>，留言板触发关键词为<strong><font color="red">留言</strong></font>。<br>
+                            当用户输入<font color="red"><strong>中文</strong></font>或<font color="red"><strong>英文</strong></font>时搜索影片；<br>
+                            当用户发送以<font color="red"><strong>http</strong></font>或<font color="red"><strong>https</strong></font>开头的网址时，自动调用解析接口进行解析播放。<br>
+                            请在微信公众平台：https://mp.weixin.qq.com中正确填写开发者选项。<br>
+                    
+                          </div> 
+
+                    </div>
+                </div>
+
+ 
+                <div class="layui-form-item">
+                    <label for="L_repass" class="layui-form-label">
+                    </label>
+                    <button  class="layui-btn" lay-filter="save" lay-submit="" >
+                        保存
+                    </button>
+                </div>
+            </form>
+        </div>
+        <script>
+            layui.use(['form', 'layer'], function () {
+                $ = layui.jquery;
+                var form = layui.form, layer = layui.layer;
+
+                //监听提交
+                form.on('submit(save)', function (data) {
+
+                    //发异步，把数据提交给php 
+                    data.field.type = "plus_weixin_save";
+                    x_admin_post("admin.php", data.field);
+                    
+                   return false;
+                });
+               
+            });
+        
+        </script>
+
+    </body>
+
+</html>

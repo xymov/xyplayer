@@ -1,0 +1,263 @@
+<?php include '../save/config.php';include "block_header.htm";?>
+
+    <body>
+        
+         <div class="x-nav">
+            <span class="layui-breadcrumb">
+                <a href="">首页</a>
+                <a href="">插件管理</a>
+                <a>
+                    <cite>APP设置</cite></a>
+            </span>
+             
+                <button  id="replace" style="margin-left:1em;line-height:1.6em;margin-top:3px;float:right"  class="layui-btn layui-btn-sm"  title="刷新" onclick="location.replace(location.href)"><i class="layui-icon  layui-icon-refresh"></i></button>
+
+        </div>
+        
+        
+        <div class="x-body">
+            <form class="layui-form">
+
+
+                <div class="layui-form-item">
+                    <label for="username" class="layui-form-label">
+                        功能开关:
+                    </label>
+                    <div class="layui-input-inline">
+                        <select name="PLUS_APP_OFF" lay-filter="province">							 
+                            <?php foreach (array("关闭", "启用") as $key => $val): ?>							 							 
+                                <option value="<?php echo $key ?>"  <?php echo ($CONFIG['plus']['app']['off'] == $key) ? "selected" : ''; ?>><?php echo $val ?></option>	   
+                         <?php endforeach; ?> 			         
+                        </select>
+
+                      </div>
+
+                      <div class="layui-form-mid layui-word-aux">
+                        选择是否开启APP功能。
+                    </div>
+
+                    </div>
+
+
+                  <div class="layui-form-item">
+                    <label for="username" class="layui-form-label">
+                        APP令牌:
+                    </label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="PLUS_APP_TOKEN" autocomplete="off"  value="<?php echo $CONFIG['plus']['app']['token']; ?>" class="layui-input" >		
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">
+                        用于地址加密。
+                    </div>
+                </div>
+
+                
+
+
+                <div class="layui-form-item">
+                    <label for="username" class="layui-form-label">
+                        APP名称:
+                    </label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="PLUS_APP_TITLE" autocomplete="off"  value="<?php echo $CONFIG['plus']['app']['title']; ?>" class="layui-input" >		
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">
+                        例如："星源影视""
+                    </div>
+                </div>
+
+                
+                
+                
+                
+                
+                <div class="layui-form-item">
+                    <label for="username" class="layui-form-label">
+                       主页地址:
+                    </label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="PLUS_APP_HOME" autocomplete="off" value="<?php echo $CONFIG['plus']['app']['home']; ?>" class="layui-input" >		
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">
+                        设置APP主页, 示例："http://v.nohacks.cn" 
+                    </div>
+                 </div>
+
+
+                <div class="layui-form-item">
+                    <label for="username" class="layui-form-label">
+                        搜索API:
+                    </label>
+                    <div class="layui-input-inline">
+
+                           <input type="text" name="PLUS_APP_SEARCH" autocomplete="off" value="<?php echo $CONFIG['plus']['app']['search']; ?>" class="layui-input" >	
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">
+                        设置搜索API, 示例：http://m.iqiyi.com/search.html?&key= 
+                    </div>
+                </div>
+
+                 <div class="layui-form-item">
+                    <label for="username" class="layui-form-label">
+                        提示API:
+                    </label>
+                    <div class="layui-input-inline">
+                             <input type="text" name="PLUS_APP_SU" autocomplete="off" value="<?php echo $CONFIG['plus']['app']['su']; ?>" class="layui-input" >
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">
+                        设置搜索输入提示API,一般无需设置 示例：http://suggestion.baidu.com/su?wd=
+                    </div>
+                </div>
+                
+                
+                  <div class="layui-form-item">
+                    <label for="username" class="layui-form-label">
+                        排行API:
+                    </label>
+                    <div class="layui-input-inline">
+                             <input type="text" name="PLUS_APP_TOP_VALUE" autocomplete="off" value="<?php echo $CONFIG['plus']['app']['top']['value']; ?>" class="layui-input" >
+                     
+                    
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">
+                        设置排行API,一般无需设置 示例：https://www.iqiyi.com/ranks/all
+                    </div>
+                </div>
+                
+                
+                  <div class="layui-form-item">
+                    <label for="username" class="layui-form-label">
+                        排行正则:
+                    </label>
+                    <div class="layui-input-inline">
+                             <input type="text" name="PLUS_APP_TOP_KEY" autocomplete="off" value=<?php echo $CONFIG['plus']['app']['top']['key']; ?>  class="layui-input" >
+
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">
+                        设置排行正则,一般无需设置 示例：name:"(.*?)",pageUrl:".*?"
+                    </div>
+                </div>
+                
+                
+                
+                <div class="layui-form-item">
+                    <label for="username" class="layui-form-label">
+                        更新版本:
+                    </label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="PLUS_APP_UPDATE_VER" autocomplete="off" value="<?php echo $CONFIG['plus']['app']['update']['ver']; ?>" class="layui-input" >		
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">
+                        设置APP版本,APP低于此版本将提示更新,示例：3.0
+                    </div>
+                </div>
+                
+                
+                 <div class="layui-form-item layui-form-text">
+                    <label class="layui-form-label">
+                        更新信息:
+                    </label>
+                    <div class="layui-input-block">
+                        <textarea name="PLUS_APP_UPDATE_INFO"  style="height:100px"   class="layui-textarea" ><?php echo $CONFIG['plus']['app']['update']['info']; ?></textarea>
+                    </div>
+                </div>
+
+                
+                  <div class="layui-form-item layui-form-text">
+                    <label class="layui-form-label">
+                        更新地址:
+                    </label>
+                      <div class="layui-input-inline">
+                        <input type="text" name="PLUS_APP_UPDATE_URL" autocomplete="off" value="<?php echo trim($CONFIG['plus']['app']['update']['url']);?>" placeholder='<?php echo  GlobalBase::is_root()."plus/app/app.apk"; ?>' class="layui-input" >		
+                    </div>
+                      
+                      <div class="layui-form-mid layui-word-aux">
+                          设置更新地址，默认为：<a href="<?php echo  GlobalBase::is_root()."plus/app/app.apk"; ?>"><?php echo  GlobalBase::is_root()."plus/app/app.apk"; ?></a>
+                    </div>
+                      
+                </div>
+                
+                
+                 <div class="layui-form-item">
+                    <label for="username" class="layui-form-label">
+                        UA设置:
+                    </label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="PLUS_APP_UA" autocomplete="off" value="<?php echo $CONFIG['plus']['app']['ua']; ?>" class="layui-input" >		
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">
+                        设置浏览器附加UA,示例：vipvod/2.1.6.0(xysoft:Android)
+                    </div>
+                </div>
+                
+                
+                <div class="layui-form-item layui-form-text">
+                    <label class="layui-form-label">
+                        解析线路:
+                    </label>
+                    <div class="layui-input-block">
+                        <textarea name="PLUS_APP_SITES"  style="height:100px"   class="layui-textarea" ><?php foreach( $CONFIG['plus']['app']['sites'] as $val)  echo $val['name'].','.$val['api']."\r\n"; ; ?></textarea>
+                    </div>
+                </div>
+                
+       
+                <div class="layui-form-item">
+                    <label for="username" class="layui-form-label">
+                       默认线路:
+                    </label>
+                    <div class="layui-input-inline">
+                    <select name="PLUS_APP_START" lay-filter="province">							 
+                                                        <?php foreach ($CONFIG['plus']['app']['sites'] as $key => $val): ?>							 							 
+                                                            <option value="<?php echo $key; ?>" <?php echo ($CONFIG['plus']['app']['start']  == $key) ? "selected" : ''; ?> ><?php echo $val['name']; ?></option>	   
+                                                        <?php endforeach; ?> 
+                      </select>
+                
+                 </div>
+           </div>
+
+                <div class="layui-form-item layui-form-text">
+                    <label class="layui-form-label">
+                        帮助信息:
+                    </label>
+                 
+                        <div class="layui-form-mid layui-word-aux">
+                            注意：服务器加密地址：<font color="red"><strong><?php echo  base64_encode(GlobalBase::is_root().$CONFIG['API_PATH'].'?tp='.$CONFIG['plus']['app']['token']); ?>  </strong></font><br>
+               
+                             请更新APP资源"assets"目录里的配置文件"update.json"为此内容，可以在手机里使用AE管理器或类似软件修改。
+                          </div> 
+
+                    </div>
+             
+
+ 
+                <div class="layui-form-item">
+                    <label for="L_repass" class="layui-form-label">
+                    </label>
+                    <button  class="layui-btn" lay-filter="save" lay-submit="" >
+                        保存
+                    </button>
+                </div>
+            </form>
+        </div>
+        <script>
+            layui.use(['form', 'layer'], function () {
+                $ = layui.jquery;
+                var form = layui.form, layer = layui.layer;
+
+                //监听提交
+                form.on('submit(save)', function (data) {
+
+                    //发异步，把数据提交给php 
+                    data.field.type = "plus_app_save";
+                    x_admin_post("admin.php", data.field);
+                    
+                   return false;
+                });
+               
+            });
+        
+        </script>
+
+    </body>
+
+</html>

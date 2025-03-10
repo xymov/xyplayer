@@ -1,0 +1,466 @@
+<?php include "block_header.htm";?>
+
+<body>
+<div class="x-nav">
+            <span class="layui-breadcrumb">
+                <a href="">首页</a>
+                <a href="">资源设置</a>
+                <a>
+                    <cite>云播设置</cite></a>
+           </span>
+      <button  id="replace" style="margin-left:1em;line-height:1.6em;margin-top:3px;float:right"  class="layui-btn layui-btn-sm" lay-event="replace" title="文本模式" onclick="code();"><i class="layui-icon  layui-icon-code-circle"></i></button>
+   <button  id="replace" style="margin-left:1em;line-height:1.6em;margin-top:3px;float:right"  class="layui-btn layui-btn-sm" lay-event="replace" title="刷新" onclick="location.replace(location.href)"><i class="layui-icon  layui-icon-refresh"></i></button>
+   <input  id="search"  style="line-height:1.6em;margin-top:3px;float:right"  class="layui-input-inline layui-btn layui-btn-sm" type="text" name="PARSE_NAME" autocomplete="off" class="layui-input" lay-event="search"  lay-verify="required" placeholder="搜索">		   
+
+</div>
+
+<div class="xbody">
+ <div id="table">
+<table id="demo" lay-filter="test"></table>
+<button type="button" class="layui-btn" id="uploadDemo" style="display:none"></button>
+</div>
+<div  id="code" style="display:none">
+                    <form class="layui-form layui-form-pane" action="">
+
+                        <div class="layui-form-item layui-form-text">
+
+                            <label class="layui-form-label">
+                               *名称,*地址
+                            </label>
+                            <div class="layui-input-block">
+                                <textarea name="resource" style="height:400px" class="layui-textarea"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item">
+                            <button class="layui-btn" lay-submit="" lay-filter="*">
+                                保存
+                            </button>
+                        </div>
+                    </form>
+            
+</div>
+
+
+
+<script type="text/html" id="toolbarDemo" title="工具条">
+    <div class="layui-btn-container">
+    <button class="layui-btn layui-btn-sm" lay-event="add" title="添加"><i class="layui-icon  layui-icon-add-1"></i></button>
+    <button class="layui-btn layui-btn-sm" lay-event="update" title="修改"><i class="layui-icon  layui-icon-edit"></i></button>
+    <button class="layui-btn layui-btn-sm" lay-event="delete" title="删除"><i class="layui-icon  layui-icon-delete"></i></button>
+    <button class="layui-btn layui-btn-sm" lay-event="start" title="开启"><i class="layui-icon  layui-icon-play"></i></button>
+    <button class="layui-btn layui-btn-sm" lay-event="stop" title="停止"><i class="layui-icon  layui-icon-pause"></i></button>
+    <button  id="check" class="layui-btn layui-btn-sm" lay-event="check" title="检测"><i class="layui-icon  layui-icon-find-fill"></i></button>
+    </div>   
+</script>
+
+<script type="text/html" id="barDemo" title="右侧工具条">
+  <div class="layui-btn-group">
+  <button type="button" class="layui-btn layui-btn-xs layui-btn-primary" lay-event="check" title="检测"><i class="layui-icon  layui-icon-refresh"></i></button>    
+  <button type="button" class="layui-btn layui-btn-xs layui-btn-primary" lay-event="edit" title="编辑"><i class="layui-icon  layui-icon-edit"></i></button>
+  <button type="button" class="layui-btn  layui-btn-xs layui-btn-primary" lay-event="del" title="删除"><i class="layui-icon  layui-icon-delete"></i></button>
+   <button type="button" class="layui-btn layui-btn-xs layui-btn-primary layui-hide-xs" lay-event="top" title="置顶"><i class="layui-icon  layui-icon-upload-circle"></i></button>
+   <button   type="button" class="layui-btn layui-btn-xs layui-btn-primary layui-hide-xs" lay-event="up" title="上移"><i class="layui-icon  layui-icon-up"></i></button>
+   <button type="button" class="layui-btn layui-btn-xs layui-btn-primary layui-hide-xs" lay-event="down" title="下移"><i class="layui-icon  layui-icon-down"></i></button>
+ </div>
+</script>
+</div> 
+      
+<script>  
+    
+ var type="resource";
+ var check={index:0,count:0,num:0,status:[]};   
+ layui.use(['form','table'], function(){ 
+  var table = layui.table;
+  var form = layui.form;
+  var upload = layui.upload;   //上传
+  $ = layui.jquery;
+   var tableIns=table.render({
+    elem: '#demo'
+    ,toolbar: '#toolbarDemo'
+    ,url: 'api.php' //数据接口
+    ,text: {none: '暂无相关数据'} 
+    ,method:'post'
+    ,where:{type:type,token:'<?php echo Crumb::issueCrumb("resource",60); ?>'}
+    ,page: true //开启分页
+    ,limit:50
+    ,limits:[10,25,50,100,500,1000]
+    ,defaultToolbar: ['filter', 'print', 'exports',
+        {title: '导入' ,layEvent: 'LAYTABLE_INPUT' ,icon: 'layui-icon-upload'}
+        ]
+     ,cols: [[ //表头
+       {checkbox: true} 
+      ,{type:'numbers',title: '序号', width:100}
+      ,{field: 'id',title: '编号', width:100 ,hide:true}
+      ,{title: '开关', width:100,templet:  function(d){
+          return '<input name="checkbox" type="checkbox" id="'+d.id+ (d.off==="1"?'"  checked':'" ')+'  href="javascript:;"  lay-skin="switch" lay-filter="switch_off" lay-text="ON|OFF">';
+        }}
+      ,{field: 'name', title: '名称',width:200}
+      ,{field: 'url', title: '地址'}
+     
+       ,{field: 'status', title: '状态',sort:true,width:120} 
+       
+      ,{title: '操作', align:'center', toolbar: '#barDemo',width:200}
+    ]]
+   ,done: function () {//表格渲染完成的回调函数
+               var headertop = $(".layui-table-header").offset().top;//获取表头到文档顶部的距离
+               $(window).scroll(function () { //开始监听滚动条                         
+               if (headertop - $(window).scrollTop() < 0) 
+               {                              
+                  // $(".layui-table-header").addClass('table-header-fixed');//添加样式，固定住表头
+                }else{
+                  //  $(".layui-table-header").removeClass('table-header-fixed');//移除样式   
+                   //$(".layui-table-header").addClass('layui-clear');//添加样式，固定住表头
+                     
+                 }
+                        });
+                      }
+      });
+ 
+     //重载
+      function tabReload(search){
+        
+        if(search!==""){
+             
+            tableIns.reload({where:{type:type,token:'<?php echo Crumb::issueCrumb("resource",60); ?>',search:search},page: {curr: 1 }});
+        }else{
+            
+            tableIns.reload({where:{type:type,token:'<?php echo Crumb::issueCrumb("resource",60); ?>'},page: {curr: 1 }});
+        }
+        
+    }
+ 
+    
+ 
+      //搜索点击事件处理程序
+        $("#search").click(function(event)
+        { 
+            tabReload($(this).val());
+    
+        });
+ 
+ 
+        //搜索键盘键被松开时事件处理程序
+        $("#search").keyup(function(event)
+        { 
+            tabReload($(this).val());
+    
+        });
+			
+     //搜索处理enter键消息 	
+    $("#search").keypress(function(event){ 
+        if(event.keyCode === 13)
+        { 
+          tabReload($(this).val());
+          event.preventDefault(); 
+        } 
+     });
+ 
+     // $('#page').css('text-align', 'right');  // 分页右对齐
+     // $('.layui-table-page').css('text-align', 'right');  // 数据表格分页右对齐
+
+  //监听指定开关
+  form.on('switch(switch_off)', function(data){
+       parse_stop(this,this.id-1);
+    });
+  
+//监听头工具栏事件
+
+  table.on('toolbar(test)', function(obj){
+    var checkStatus = table.checkStatus(obj.config.id)
+    ,data = checkStatus.data; //获取选中的数据
+     var checkid=function(){var ids=new Array(); data.forEach(function(val) { ids.push(val.id-1);});return ids;}();
+    switch(obj.event){
+      case 'add':
+          x_admin_show('添加', 'load.php?url=admin_'+type+'_add.htm',400,400);
+      break;
+      
+      //检测全部
+      case 'check':
+            var all= table.getData(obj.config.id); 
+             check.count=all.length; check.index=layer.load();
+             $('#check').addClass("layui-disabled");
+               for (var i=0;i<all.length;i++)
+             { 
+                 
+              // SetTableColumn(Number(i),6,'<i class="layui-icon layui-icon-loading layui-icon layui-anim layui-anim-rotate layui-anim-loop"></i><font>正在检测</font>');
+ 
+               parse_check(i, all[i]['url'],true);   
+            }
+      break;
+
+    //开启多选
+    case 'start':
+        
+
+            if(data.length === 0){
+                layer.msg('请选择一行');
+           }else{
+                  startAll(checkid);
+     
+           }
+
+       
+     break;
+    
+    //关闭多选
+    case 'stop':
+           if(data.length === 0){
+                layer.msg('请选择一行');
+           }else{
+                stopAll(checkid);
+
+           }
+      
+     break;
+    
+    
+      case 'update':
+        if(data.length === 0){
+          layer.msg('请选择一行');
+        } else if(data.length > 1){
+          layer.msg('只能同时编辑一个');
+        } else {
+          var row= checkid[0];
+            
+          x_admin_show('修改解析(序号：'+(1+ Number(row))+")", 'load.php?url=admin_'+type+'_edit.htm&id='+ row,400,400);
+        }
+      break;
+      case 'delete': 
+           if(data.length === 0){
+                layer.msg('请选择一行');
+           }else{
+                delAll(checkid);
+     
+           }
+   
+      break;
+ 
+    case 'code': 
+
+        $("#code").show();
+   
+      break;
+      
+      
+      
+      
+      
+ 
+    //导入
+       case   'LAYTABLE_INPUT': 
+           document.getElementById("uploadDemo").click();      
+      break;
+
+ 
+    };
+  });
+  
+
+  
+  //工具条事件
+table.on('tool(test)', function(obj){ //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
+  var data = obj.data; //获得当前行数据
+  var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+  var tr = obj.tr; //获得当前行 tr 的 DOM 对象（如果有的话） 
+  var row= tr[0].getAttribute("data-index");  //获取当前行号
+  var id=obj.data.id-1;     
+ 
+  if(layEvent === 'check'){ //检测
+      parse_check(row, data.url);
+
+  } else if(layEvent === 'del'){ //删除
+      
+    layer.confirm('真的删除行么', function(index){
+      obj.del(); //删除对应行（tr）的DOM结构，并更新缓存
+      layer.close(index);
+      //向服务端发送删除指令
+       x_admin_post("admin.php", {"type": "table_del", "id": id,"flag": type});
+    });
+    
+   } else if(layEvent === 'top'){ //置顶
+       
+      x_admin_post("admin.php", {"type": "table_top", "id": id,"flag": type});
+  } else if(layEvent === 'up'){ //上移
+       
+      x_admin_post("admin.php", {"type": "table_up", "id": id,"flag": type});
+      
+  } else if(layEvent === 'down'){ //下移
+       
+      x_admin_post("admin.php", {"type": "table_down", "id": id,"flag": type});    
+    
+  } else if(layEvent === 'edit'){ //编辑
+    //do something
+     x_admin_show('修改(ID:'+(1+ Number(id))+")", 'load.php?url=admin_'+type+'_edit.htm&id='+ id,400,400);
+
+  }
+});
+ 
+  //上传
+  upload.render({
+    elem: '#uploadDemo'
+    ,url: 'api.php' 
+    ,data:{type:'resource_upload',token:'<?php echo Crumb::issueCrumb("resource_upload",60); ?>'}
+    ,accept:'file'
+    ,exts: 'csv|xml|xls|json|m3u'
+    ,done: function(res){
+        
+     
+        console.log(res.data); 
+      
+        
+    var jsontext=Base64.encode(JSON.stringify(res.data));
+    
+     console.log(jsontext); 
+      
+      x_admin_post("admin.php", {"type": "table_upload","flag": "resource","data": jsontext});
+      layer.msg('导入成功');
+       
+    }
+    ,before: function(){
+      layer.msg('上传中', {icon: 16, time: 0});
+    }
+  });
+  
+  
+                    //监听提交
+      form.on('submit(*)', function(data) {
+                        
+              //发异步，把数据提交给php    
+                  x_admin_post("save.php", data.field);
+                   return false;            
+                        
+                        
+      });
+  
+  
+  
+  
+});
+
+   /*用户-停止/启用*/
+     function parse_stop(obj, id) 
+            {
+                if (!obj.checked)
+                {
+                  x_admin_send("admin.php", {"type": "table_stop", "id": id,"flag": type});  
+                } else {
+                   x_admin_send("admin.php", {"type": "table_start", "id": id,"flag": type});           
+                }
+            };
+     
+     /*用户-检测全部*/
+            function checkAll() {
+                var json=JSON.parse('<?php echo json_encode($CONFIG["resource"]); ?>');
+                for (var i=0;i<json.length;i++)
+             { 
+                parse_check(i, json[i]['url']);
+            }
+               // layer.alert("检测完毕，失效链接将全部停用!",{icon: 1},function(){x_admin_close();});  
+            }
+     
+      /*用户-检测单个*/
+            function parse_check(row, url,isall) 
+            {  
+             var id=GetTableColumn(Number(row),1)-1;
+
+             SetTableColumn(Number(row),6,'<i class="layui-icon layui-icon-loading layui-icon layui-anim layui-anim-rotate layui-anim-loop"></i><font>正在检测</font>');
+         
+             x_admin_checkUrl(url,function (res)
+            {
+                    console.log(res.status);
+                 if (res.status===200) {
+                     
+                      SetTableColumn(Number(row),6,'可用');
+                      $(".layui-form-switch").eq(row).addClass('layui-form-onswitch');
+                       $(".layui-form-switch").eq(row).html("<em>ON</em><i></i>");
+  
+                     if(isall){
+                             check.status.push({'id':id,'status':'可用'});
+                        }else{
+                            x_admin_send( "admin.php", {"type": "table_check","flag":type,"id": id,"data":"可用"});
+                        }
+  
+                } else {
+                          SetTableColumn(Number(row),6,'失效');
+                           $(".layui-form-switch").eq(row).removeClass('layui-form-onswitch');
+                           $(".layui-form-switch").eq(row).html("<em>OFF</em><i></i>");
+              
+                        if(isall){
+                             check.status.push({'id':id,'status':'失效'});
+                        }else{
+                            x_admin_send( "admin.php", {"type": "table_check","flag":type,"id": id,"data":"失效"});
+                        }
+                   
+                 }  
+                  
+                 if(isall){
+                    check.num++;
+                     $('#check').html('<i class="layui-icon layui-icon-loading layui-icon layui-anim layui-anim-rotate layui-anim-loop"></i> <font>正在检测:'+check.num+"/"+check.count+'</font>');
+                if(check.num>=check.count){   
+                       layer.msg("全部检测完成");
+                       var jsontext=Base64.encode(JSON.stringify(check.status));
+                       x_admin_send( "admin.php", {"type": "table_checkall","flag":type,"id": id,"data":jsontext});
+                       layer.close( check.index);
+                       check.count=0;check.num=0;
+                       check.status=[];
+                       $('#check').html('<i class="layui-icon  layui-icon-find-fill"></i>');
+                       $('#check').removeClass("layui-disabled");                
+                 }
+
+            }
+              }
+  
+                );
+    
+          };
+
+            /*用户-删除*/
+            function parse_del(obj, id){layer.confirm('确认要删除吗？', function (index){ x_admin_post("admin.php", {"type": "table_del", "id": id,"flag": type}); });}
+           
+           /*用户-删除 多选*/
+            function delAll(data)
+            {  
+             data = data.join(",");  
+            layer.confirm('确认要删除所选吗？', function (index) {x_admin_post("admin.php", {"type": "table_del", "id": data,"flag":type}); });
+            }
+           
+           /*用户-停止 多选*/
+            function startAll(data)
+            { 
+             data = data.join(",");  
+            layer.confirm('确认要开启所选吗？', function (index) {x_admin_post("admin.php", {"type": "table_start", "id": data,"flag": type}); });
+            }  
+             
+             /*用户-启动 多选*/
+            function stopAll(data)
+            { 
+             data = data.join(",");  
+            layer.confirm('确认要停止所选吗？', function (index) {x_admin_post("admin.php", {"type": "table_stop", "id": data,"flag":type}); });
+            }   
+              
+             /*高级模式 */ 
+             function code(){
+                     $("#table").toggle();
+                       $("#code").toggle();
+                        $("#search").toggle();
+                 var text='';
+                 var json=JSON.parse('<?php echo json_encode($CONFIG["resource"]); ?>');
+               for (var i=0;i<json.length;i++)
+             { 
+                 text+=json[i].name+","+json[i].url+"\n" ;   
+             }
+                    $(".layui-textarea").val(text);     
+                        
+                        
+                        
+                 }
+    
+    
+             
+</script>
+
+
+    </body>
+
+</html>

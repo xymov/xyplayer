@@ -1,0 +1,5 @@
+异常发生！错误属于：0,Call to undefined function foobar()，所在文件 /Users/nohacks/Documents/web/parse/include/class.main.php，位于行 72
+异常发生！错误属于：0,Call to undefined function foobar()，所在文件 /Users/nohacks/Documents/web/parse/include/class.main.php，位于行 72
+异常发生！错误属于：0,Call to undefined function foobar()，所在文件 /Users/nohacks/Documents/web/parse/include/class.main.php，位于行 72
+异常发生！错误属于：0,simplexml_load_string(): Argument #2 ($class_name) must be a class name derived from SimpleXMLElement or null, 16384 given，所在文件 /Users/nohacks/Documents/web/parse/video/class.yun.php，位于行 590
+异常发生！错误属于：0,simplexml_load_string(): Argument #2 ($class_name) must be a class name derived from SimpleXMLElement or null, 16384 given，所在文件 /Users/nohacks/Documents/web/parse/video/class.yun.php，位于行 590

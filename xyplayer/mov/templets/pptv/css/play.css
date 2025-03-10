@@ -1,0 +1,31 @@
+/* 播放盒子 */
+.play-box { position:relative;width:15rem;height:12rem;background:#000;border:none;overflow:hidden }
+.play-box iframe { position:relative;width:100%;height:100%;border:none;z-index:0 }
+.play-box .tip { position:absolute;left:0;bottom:0;width:100%;height:3rem;line-height:3rem;text-align:center;background:#000;z-index:99;color:rgba(255,255,255,0.85);display:none }
+.play-box .tip a { color:#007AFF }
+.play-box .tip i { display:block;position:absolute;width:1.6rem;height:1.6rem;background:url(../images/tip_close.png) no-repeat center;top:0;right:0;background-size:0.7rem 0.7rem;opacity:0.85 }
+
+/* 来源 */
+.from-title { height:1.4rem;line-height:1.4rem;font-size:0.66rem;padding:0 0.5rem;overflow:hidden }
+.from-title span { padding-left:0.3rem;font-size:0.55rem;color:#AAA;font-weight:normal }
+.from { padding-left:0.5rem }
+.from a,.episodes a { display:block;float:left;height:2.08rem;line-height:2.15rem;margin-top:0.3rem;margin-right:0.3rem;background:#F3F3F3;text-align:center;border-radius:0.1rem;color:#333;font-size:0.5rem;box-sizing:border-box }
+.from a { padding:0 0.8rem }
+.from a.current,.episodes a.current { background:#F8F8F8;color:#007AFF }
+
+/* 选集 */
+.episodes-title { position:relative;height:2rem;line-height:2rem;font-size:0.56rem }
+.episodes { padding-left:0.5rem }
+.episodes a { min-width:2.08rem }
+.episodes .episodes-title .episodes-control { position:absolute;right:0.2rem;top:-0.1rem }
+.episodes .episodes-title .episodes-control a { width:2.5rem;height:1.6rem;line-height:1.65rem;text-align:center;font-weight:normal;text-indent:0;display:none }
+/* 综艺选集 */
+.episodes .episodes-list.float-none a { float:none;margin-right:0.5rem;height:auto;min-height:0.7rem;line-height:0.7rem;padding:0.6rem 0.5rem }
+
+/* 更多信息 */
+.more { position:relative;padding:0 0.5rem;min-height:6.6rem }
+.more i { display:block;position:absolute;width:4.6rem;height:6.2rem;left:0.5rem;background-size:4.6rem 6.2rem }
+.more h5,.more span,.more div { display:block;margin-left:5rem;line-height:0.7rem;font-size:0.5rem;margin-bottom:0.1rem }
+.more h5 { font-size:0.6rem;margin-bottom:0.5rem;margin-top:0.1rem }
+.more div { margin-left:0 }
+.more.desc { min-height:0 }

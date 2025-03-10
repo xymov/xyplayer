@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="IE=edge" >
+<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no"/>
+<title>Aliplayer Online Settings</title>
+<link rel="stylesheet" href="https://g.alicdn.com/de/prismplayer/2.8.8/skins/default/aliplayer-min.css" />
+<script type="text/javascript" charset="utf-8" src="https://g.alicdn.com/de/prismplayer/2.8.8/aliplayer-min.js"></script>
+
+<style type="text/css">
+
+html,body{
+  background-color:#000;
+  padding: 0;
+  margin: 0;
+  height:100%;
+  width:100%;
+  color:#999;
+  overflow:hidden;
+  }
+  #player-con {
+            height: 100% !important;
+            width: 100% !important;
+        }
+
+</style>
+
+
+</head>
+<body>
+<div class="prism-player" id="player-con"></div>
+<script>
+
+     
+    function _GET(name,isurl) { 
+         isurl=isurl || false;
+         var word="(^|&)" + name + "=([^&]*)(&|$)";
+         if(isurl){word="(^|&)" + name + "=(.*?)$";}	
+         var reg = new RegExp(word, "i");
+         var r = window.location.search.substr(1).match(reg);
+         if (r !== null) {
+             return decodeURI(r[2]);
+         };
+         return "";
+     }  
+     
+       var url=decodeURIComponent(_GET('url'));              //取得url地址
+       var autoplay= _GET('autoplay')==="0" ? 0 : 1;          //自动播放 
+       var seektime=_GET('seektime')==="0" ? 0 : 1;        //记忆播放，默认启用
+       var logo_off=_GET('logo_off')==="1" ? 1 : 0;        //LOGO开关，默认关闭
+       var live  =_GET('live')==="1" ? 1 : 0;              //是否直播
+    
+
+
+var player = new Aliplayer({
+  "id": "player-con",
+  "source": url,
+  "width": "100%",
+  "height": "100%",
+  "language": "zh-cn",
+  "autoplay": autoplay,
+  "isLive": live,
+  "rePlay": false,
+  "playsinline": true,
+  "preload": true,
+  "controlBarVisibility": "hover",
+
+  
+
+}, function (player) {
+    console.log("The player is created");
+  }
+);
+</script>
+</body>
+

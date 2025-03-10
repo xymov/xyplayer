@@ -1,0 +1,328 @@
+<?php include "block_header.htm";
+  include '../mov/config.php';
+?>
+
+<style>
+    .long {
+			width: 300px !important;
+			text-align: center;
+		}
+
+</style>
+
+ <body>
+        <div class="x-nav">
+            <span class="layui-breadcrumb">
+                <a href="">首页</a>
+                <a href="">插件管理</a>
+                <a>
+                    <cite>影视大全</cite></a>
+            </span>
+                   <button style="margin-left:1em;line-height:1.6em;margin-top:3px;float:right"  class="layui-btn layui-btn-sm"  title="刷新" onclick="location.replace(location.href)"><i class="layui-icon  layui-icon-refresh"></i></button>
+
+        </div>
+     
+     
+     <div class="x-body">
+         
+         <form class="layui-form layui-form-pane" id="configform">
+             
+            
+              <div class="layui-form-item">
+                    <label for="username" class="layui-form-label">
+                        站点名称:
+                    </label>
+                    <div class="layui-input-inline long">
+                        <input type="text" name="config[title]" autocomplete="off"  value="<?php echo $CONFIG['title']; ?>" class="layui-input" >		
+                    </div>
+                    <div class="layui-form-mid layui-word-aux"><span class="x-red">*</span> 设置网站名称，如：星源影视。
+                            </div>
+                 
+                   
+             </div>
+             <div class="layui-form-item ">
+                    <label for="username" class="layui-form-label">
+                        使用模板:
+                    </label>
+                    <div class="layui-input-inline long">
+                        
+                        <?php $arr = GlobalBase::getdirs("../mov/templets"); ?>
+                         <select name="config[templets]" lay-filter="province">	
+                            <?php foreach ($arr as $key): ?>
+                             <?php if($key=='')$key= 'default';?>
+                               <option <?php $val=$CONFIG["templets"];echo(($val==$key) ? "selected" : '');?>><?php echo $key;?></option>	   
+                             <?php endforeach; ?>
+                            </select>
+                    </div>
+                    <div class="layui-form-mid layui-word-aux"><span class="x-red">*</span> 选择一个喜欢的模版。
+                            </div>
+                 
+                 
+                  
+             </div>
+             
+               <div class="layui-form-item ">
+                    <label for="username" class="layui-form-label">
+                        轮播模式:
+                    </label>
+                    <div class="layui-input-inline long">
+                        
+                        <?php $arr = array('默认','自定义'); ?>
+                         <select name="config[banner][type]" lay-filter="province">	
+                            <?php foreach ($arr as  $i => $key): ?>
+                            <option value='<?php echo $i; ?>' <?php $val=$CONFIG['banner']['type'];echo(($i==$val) ? "selected" : '');?>><?php echo $key;?></option>	   
+                             <?php endforeach; ?>
+                            </select>
+                    </div>
+                    <div class="layui-form-mid layui-word-aux"><span class="x-red">*</span> 设置首页轮播模式，默认或者自定义。
+                            </div>
+         
+             </div>
+             
+             
+              <div class="layui-form-item">
+                    <label for="username" class="layui-form-label">
+                         LOGO:
+                    </label>
+                    <div class="layui-input-inline long">
+                        <input type="text" name="config[logo]" autocomplete="off"  value="<?php echo $CONFIG['logo']; ?>" class="layui-input"  placeholder="使用模板设置">		
+                    </div>
+                    <div class="layui-form-mid layui-word-aux"><span class="x-red">*</span> 设置网站LOGO，如果为空使用模板设置。
+                            </div>
+                 
+                   
+             </div>
+             
+             <div class="layui-form-item">
+                    <label for="username" class="layui-form-label">
+                         来源过滤:
+                    </label>
+                    <div class="layui-input-inline long">
+                        <input type="text" name="config[js_config][from_filtr]" autocomplete="off"  value="<?php echo $CONFIG['js_config']['from_filtr']; ?>" class="layui-input"  placeholder="">		
+                    </div>
+                    <div class="layui-form-mid layui-word-aux"><span class="x-red">*</span> 设置后包含关键字的的来源将不会显示,多个用逗号分割，例如：douying,芒果,乐视,xigua
+                            </div>
+                 
+                   
+             </div>
+             
+               <fieldset class="layui-elem-field">
+
+                            <legend>缓存设置</legend>
+                            <div class="layui-field-box">
+                                <table class="layui-table">
+                                    <tbody>
+                                        <tr>
+                                            <th>工作模式（硬盘缓存需设置cache文件夹权限为755以上,内存缓存速度更快但需服务器安装redis服务和插件）</th>
+                                            <td>
+
+                                                <select name="config[cache][type]" lay-filter="province">
+                                                    <?php foreach (array("关闭", "硬盘缓存", "内存缓存") as $key => $val) : ?>
+                                                        <option value="<?php echo $key; ?>" <?php echo ($CONFIG["cache"]['type'] == $key) ? "selected" : ''; ?>><?php echo $val; ?></option>
+                                                    <?php endforeach; ?>
+
+                                                </select>
+
+                                            </td>
+                                        </tr>
+                                        
+                                         <tr>
+                                            <th>缓存前缀（用于区分多个服务）</th>
+                                            <td>	
+
+                                                <input type="text" name="config[cache][prefix]" autocomplete="off" value="<?php echo $CONFIG['cache']['prefix']; ?>" class="layui-input" title="" />
+
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>服务端口（内存缓存服务端口,redis默认为6379）</th>
+                                            <td>
+
+                                                <input id="cacheProt" type="text" name="config[cache][prot]" autocomplete="off" value="<?php echo $CONFIG['cache']['prot']; ?>" class="layui-input" title="" />
+
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>服务IP（内存缓存服务IP,默认为127.0.0.1） <a class="layui-btn layui-btn-sm" href="javascript:void(0);" onclick="checkCache();">  测试连接</a></th>
+                                            <td>
+
+                                                <input id="cacheIp" type="text" name="config[cache][ip]" autocomplete="off" value="<?php echo $CONFIG['cache']['ip']; ?>" class="layui-input" title="" />
+
+
+                                            </td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <th>服务密码（内存缓存服务密码,默认为空）</th>
+                                            <td>
+
+                                                <input id="cachePass" type="password" name="config[cache][pass]" autocomplete="off" value="<?php echo $CONFIG['cache']['pass']; ?>" class="layui-input"   placeholder="空密码" />
+
+
+                                            </td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <th>保存时间,到期会自动删除,设置为0则不删除,默认设置为'30m'即半小时(单位:d|h|m|s) </th>
+                                            <td>
+
+                                                <input type="text" name="config[cache][time]" autocomplete="off" value="<?php echo $CONFIG['cache']['time']; ?>" class="layui-input" title="">
+
+                                            </td>
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </fieldset>
+             
+             
+             
+              <div class="layui-form-item">
+                    <label for="username" class="layui-form-label">
+                        播放线路:
+                    </label>
+                    <div class="layui-input-inline long">
+                        
+                         <textarea  name="config[js_config][parse]"    class="layui-textarea" ><?php echo implode("\r\n",$CONFIG['js_config']['parse']); ?></textarea>
+                    </div>
+                  <div class="layui-form-mid layui-word-aux">设置播放线路,每行一个,支持变量:$host,$title,$part(解析网址,视频标题和集数)<br>
+                        调用自身解析可以设置为：$host/?title=$title&part=$part&url=
+                            </div>
+             </div>
+             
+                <div class="layui-form-item">
+                    <label for="username" class="layui-form-label">
+                        首页轮播:
+                        
+                   
+                    </label>
+                    <div class="layui-input-inline long">
+                        
+                         <textarea  name="config[banner][data]" class="layui-textarea" ><?php echo json_encode($CONFIG['banner']['data']); ?></textarea>
+                    </div>
+                  <div class="layui-form-mid layui-word-aux">设置首页轮播,格式：[{'title'=>'',cat'=>'','id'=>'','pic'=>''},{}...]<br>提示：'cat'和'id'参数对应播放链接的cat和vid参数。
+                        
+                            </div>
+             </div>
+             
+             <div class="layui-form-item">
+                    <label for="username" class="layui-form-label">
+                        关键词:
+                    </label>
+                    <div class="layui-input-inline long">
+                        
+                        <textarea   name="config[keywords]"    class="layui-textarea" ><?php echo $CONFIG['keywords']; ?></textarea>
+                    </div>
+                    <div class="layui-form-mid layui-word-aux"><span class="x-red">*</span> 合理的关键词应该与网站内容相关,且不要堆叠太多。
+                            </div>
+             </div>
+              <div class="layui-form-item">
+                    <label for="username" class="layui-form-label">
+                        站点描述:
+                    </label>
+                    <div class="layui-input-inline long">
+                        
+                        <textarea   name="config[description]"    class="layui-textarea" ><?php echo $CONFIG['description']; ?></textarea>
+                    </div>
+                  <div class="layui-form-mid layui-word-aux"><span class="x-red">*</span> 合理的站点描述应该包含网站标题和关键字，最好不超过30个字。
+                            </div>
+             </div>
+             
+                <div class="layui-form-item">
+                    <label for="username" class="layui-form-label">
+                        页中代码:
+                    </label>
+                    <div class="layui-input-inline long">
+                        
+                        <textarea   name="config[playinfo]"    class="layui-textarea" ><?php echo $CONFIG['playinfo']; ?></textarea>
+                    </div>
+                  <div class="layui-form-mid layui-word-aux"><span class="x-red">*</span> HTML代码,位于播放器下方，可用于提示,支持变量'$title'(视频标题)
+                     </div>
+             </div>
+             
+             
+             
+              <div class="layui-form-item">
+                    <label for="username" class="layui-form-label">
+                        页尾代码:
+                    </label>
+                    <div class="layui-input-inline long">
+                        
+                        <textarea   name="config[footcode]"    class="layui-textarea" ><?php echo $CONFIG['footcode']; ?></textarea>
+                    </div>
+                  <div class="layui-form-mid layui-word-aux"><span class="x-red">*</span> HTML代码,可用于放广告和统计代码等。
+                     </div>
+             </div>
+             
+             
+             <div class="layui-form-item">
+                    <label for="username" class="layui-form-label">
+                        版权信息:
+                    </label>
+                    <div class="layui-input-inline long">
+                        
+                        <textarea   name="config[copyright]"    class="layui-textarea" ><?php echo $CONFIG['copyright']; ?></textarea>
+                    </div>
+                   <div class="layui-form-mid layui-word-aux"><span class="x-red">*</span>设置页尾版权信息。
+                     </div>
+             </div>
+             
+              
+
+             
+             
+               
+             <div class="layui-form-item">
+		<div>
+		<input name="edit" type="hidden" value="1" />
+		<button class="layui-btn" type="button" lay-submit="" lay-filter="save" >保 存</button>
+	</div>
+             
+         </form>
+         
+         
+         
+     </div>
+     
+     <script>
+           function checkCache(){
+
+           var ip= $("#cacheIp").val();
+           var prot= $("#cacheProt").val();
+           var pass= $("#cachePass").val();
+           x_admin_post("admin.php", {"type":"checkCache","check":true,"ip":ip,"prot":prot,"pass":pass});
+           
+       } ;
+         
+         
+           layui.use('form', function () {
+               
+             form = layui.form;
+ 
+              //监听提交
+        form.on('submit(save)', function(data) {
+                        
+        //发异步，把数据提交给php    
+         x_admin_post( "admin_mov_save.php", $('#configform').serialize()); 
+         
+         console.log($('#configform').serialize());
+         return false;            
+               
+      })
+  
+               
+               
+           })
+      
+         
+         
+     </script> 
+         
+ </body>
+ 
+ </html>
+ 
+ 

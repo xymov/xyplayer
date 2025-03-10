@@ -1,0 +1,1 @@
+﻿document.writeln("<font color=\'#ff0000\'>V4.2</font>");

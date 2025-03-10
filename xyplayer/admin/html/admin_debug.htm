@@ -1,0 +1,64 @@
+<?php include '../save/top.inc.php'; ?>
+<?php include "block_header.htm";?>
+
+    <body>
+        <div class="x-nav">
+            <span class="layui-breadcrumb">
+                <a><cite>首页</cite></a>  
+                <a><cite>站长工具</cite></a>
+                <a><cite>云播调试</cite></a>
+            </span>
+
+            
+           <button  onclick="location.replace(location.href);" class="layui-btn layui-hide-xs"    style="line-height:1.6em;margin-top:3px;margin-right:5px;float:right">刷新</button> 
+           <button  id="play" onclick="play()" class="layui-btn"    style="line-height:1.6em;margin-top:3px;margin-right:15px;float:right" >解析</button> 
+            <button  id="check" onclick="getSource()" class="layui-btn"    style="line-height:1.6em;margin-top:3px;margin-right:5px;float:right" >调试</button> 
+            
+        </div>
+       
+        <div class="x-body">
+            <input type="text" id="url"  value="https://v.qq.com/x/cover/mzc0020002ka95z/d0036o17h0n.html"  placeholder="请输入官方视频地址" autocomplete="off" class="layui-input">
+            <iframe id="source" style="width:100%;height:470px;border:none;"  scrolling="no"></iframe>
+       </div> 
+    
+<script type="text/javascript">
+    
+   //绑定框架
+         var iframe = document.getElementById("source");
+            if (iframe.attachEvent) {
+                iframe.attachEvent("onload", function () {
+                     onloadEvent();
+                });
+            } else {
+                iframe.onload = function () {
+                   onloadEvent();
+                };
+            }
+    
+    function onloadEvent() {
+         $('#check').html('调试');
+         $('#play').html("解析");
+         $("#source").show();
+    }
+  
+       function getSource() {
+                $("#source").hide();
+                $('#check').html('<i class="layui-icon layui-icon-loading layui-icon layui-anim layui-anim-rotate layui-anim-loop"></i> <font>载入中</font>');
+                  document.getElementById("source").src ="<?php echo GlobalBase::is_root();?>"+"api.php?dd=1&url="+document.getElementById("url").value;
+             }
+ 
+      function play() {
+              $("#source").hide();
+               $('#play').html('<i class="layui-icon layui-icon-loading layui-icon layui-anim layui-anim-rotate layui-anim-loop"></i> <font>载入中</font>');
+              document.getElementById("source").src ="<?php echo GlobalBase::is_root();?>"+"?url="+document.getElementById("url").value;
+             }
+
+</script>
+        
+     
+</body>
+
+
+
+
+</html>

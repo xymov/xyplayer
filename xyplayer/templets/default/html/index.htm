@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>    
+<head> <?php include_once "header.htm"; ?> 
+	<style>
+			#word{
+			background: #fff;
+			color: #000;
+			max-height:170px;
+			overflow-y:auto;
+			overflow-x:hidden;
+			}
+			
+			</style>
+
+</head>
+<body>
+
+  <div id="header">
+	  <div class="line"></div>
+	  <div class="list"></div>
+	  <?php if($CONFIG["BOOK_INFO"]['off']==1):?>
+            <div>
+               <marquee scrollamount=3><?php echo base64_decode($CONFIG["BOOK_INFO"]['info']);?></marquee>
+            </div>
+     <?php endif ?>
+	  
+  </div>
+
+ 
+  <div id="line">
+
+	<?php if($CONFIG["play"]['off']['submit']==1):?>
+		<div id='serch'>
+			  <font style="color: #2693FF;">视频搜索</font>
+			  <form action="./so.php"  method="get" id='submit'>
+				 <ui>
+				 <li style="width: 60%;text-align: center;"><input id="wd"  type="text" name="wd" style="width: 98%;height:98%;text-align: center;" placeholder="输入视频名称"></li>
+				 <button type="submit" style="display:none;"></button> 
+				 <li  style="width: 10%;text-align: center;" class='click_work' type='line' num='submit' >搜索 </li>
+				 <div   id="word" style="display:none;"></div>
+				 </ui>
+			  </form>
+		
+			</div>
+   <?php endif ?>
+
+    <?php if($CONFIG["play"]['off']['live']==1):?><font style="color: #2693FF;">线路切换</font><?php endif ?>
+	<div id="linelist"></div>
+	<?php if($CONFIG["play"]['off']['live']==1):?>
+	<font style="color: #2693FF">视频直播</font>
+	<div id="livelist"></div>
+	<?php endif ?>
+ </div>
+
+<div id="list">	   
+		<div id="flaglist"> </div> 
+		<div id="playlist"></div> 		
+</div>
+  <div id="section">
+		<div id="playad"></div>
+		<div id="player">  </div>	
+  </div>
+<div id="footer">   
+		<?php include_once "footer.htm"; ?>
+        <?php include_once "player.htm"; ?>
+</div>
+</body>
+
+</html>
