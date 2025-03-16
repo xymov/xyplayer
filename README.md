@@ -41,7 +41,7 @@ XyPlayer适用于需要高效、稳定视频播放的场景，如影视平台、
 ‌- 高清直播‌：支持高清画质的在线直播，满足不同场景的需求。
 ### 安装和使用方法
 
-上传upload目录下的文件到网站根目录即用，后台的访问地址为/admin，初始的管理员账户为admin，密码为admin888。
+上传upload目录下的文件到网站根目录即可使用，建议PHP版本为7.4+,后台的访问地址为/admin，初始的管理员账户为admin，密码为admin888。
 
 [演示网站](http://xymov.nohacks.cn "演示网站")
 [官方文档](https://www.kancloud.cn/nohacks/xyplayer/1209554 "官方文档")
