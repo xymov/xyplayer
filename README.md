@@ -1,4 +1,4 @@
-![image](https://blog.nohacks.cn/content/uploadfile/202502/97da1739971955.png)
+## XyPlayer 智能解析  v4.2
 
 ###主要特征
 **特性**
