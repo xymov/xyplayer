@@ -4,6 +4,21 @@
     // 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
+    {
+        "name": "Launch currently open script",
+        "type": "php",
+        "request": "launch",
+        "program": "${file}",
+        "cwd": "${fileDirname}",
+        "port": 0,
+        "runtimeArgs": [
+            "-dxdebug.start_with_request=yes"
+        ],
+        "env": {
+            "XDEBUG_MODE": "debug,develop",
+            "XDEBUG_CONFIG": "client_port=${port}"
+        }
+    },
         
     {
         "name": "Launch currently open script",

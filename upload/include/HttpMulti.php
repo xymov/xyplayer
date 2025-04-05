@@ -92,8 +92,8 @@ class VideoCrawler {
     private $handles = [];
     private $options = [
         'timeout' => 30,
-        'max_redirects' => 5,
-        'concurrency' => 3, //并发数
+        'max_redirects' => 2,
+        'concurrency' => 5, //并发数
         'retry' => 2,
         'verify_ssl' => false,
         'ip_type' => 'china',
@@ -254,12 +254,11 @@ class VideoCrawler {
             CURLOPT_ENCODING => "", //HTTP请求头中"Accept-Encoding"的值，为空发送所有支持的编码类型,解决网页乱码问题
             CURLOPT_SSL_VERIFYPEER => false, //不验证服务器的SSL证书
             CURLOPT_SSL_VERIFYHOST => 0, //不检查证书中是否设置域名
-            CURLOPT_SSLVERSION=>3,
+            //CURLOPT_SSLVERSION=>3,
             CURLINFO_HEADER_OUT => true, //获取头信息 
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_2_0, //设置 http 协议版本
             CURLOPT_HTTPHEADER => $this->generateHeaders($task['url']),
             //CURLOPT_COOKIE => $this->generateCookies(),
-  
             CURLOPT_HEADER => false,
         ];
 

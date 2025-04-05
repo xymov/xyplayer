@@ -15,19 +15,18 @@ require_once APP_PATH . 'save/yun.data.php';
 
 define('PARSE_VOD', 0);define('PARSE_URL', 1);define('PARSE_NAME',2);define('PARSE_SEARCH_ID',3);define('PARSE_SEARCH_NAME',4);
 
- 
 
 if(DEBUG){
  /*    */
   //var_dump(YUN::parse("https://v.qq.com/x/cover/mzc0020002ka95z/d0036o17h0n.html",PARSE_URL));
   //解析电影名
- // var_dump(YUN::parse(['name'=>"电影"],PARSE_NAME)); 
+ //var_dump(YUN::parse(['name'=>"电影"],PARSE_NAME)); 
   //搜索电影名
- //var_dump(YUN::parse("电影",PARSE_SEARCH_NAME)); 
+ //var_dump(YUN::parse("哪吒之魔童闹海",PARSE_SEARCH_NAME)); 
   //搜索ID
- ////var_dump(YUN::parse(['flag'=>0,'id'=>77072,'part'=>1],PARSE_SEARCH_ID));   
+ //var_dump(YUN::parse(['flag'=>1,'id'=>77072,'part'=>1],PARSE_SEARCH_ID));   
   //搜索本地库
- // var_dump(YUN::parse("遇龙",PARSE_VOD)); 
+  //var_dump(YUN::parse("遇龙",PARSE_VOD)); 
 
 
 }

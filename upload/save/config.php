@@ -822,15 +822,17 @@ $CONFIG=array (
   array (
     0 => 
     array (
+      'off' => '1',
       'name' => '非凡资源',
       'url' => 'http://www.ffzy.tv/api.php/provide/vod/',
-      'off' => '1',
+      'type' => '1',
     ),
     1 => 
     array (
+      'off' => '1',
       'name' => '卧龙资源',
       'url' => 'https://collect.wolongzyw.com/api.php/provide/vod/',
-      'off' => '1',
+      'type' => '1',
     ),
   ),
   'vod' => 
