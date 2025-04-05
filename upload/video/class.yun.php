@@ -15,6 +15,8 @@ require_once APP_PATH . 'save/yun.data.php';
 
 define('PARSE_VOD', 0);define('PARSE_URL', 1);define('PARSE_NAME',2);define('PARSE_SEARCH_ID',3);define('PARSE_SEARCH_NAME',4);
 
+
+
 if(DEBUG){
  /*    */
   //var_dump(YUN::parse("https://v.qq.com/x/cover/mzc0020002ka95z/d0036o17h0n.html",PARSE_URL));
@@ -23,7 +25,7 @@ if(DEBUG){
   //搜索电影名
  //var_dump(YUN::parse("电影",PARSE_SEARCH_NAME)); 
   //搜索ID
- //var_dump(YUN::parse(['flag'=>0,'id'=>222821,'part'=>1],PARSE_SEARCH_ID));  
+ ////var_dump(YUN::parse(['flag'=>0,'id'=>77072,'part'=>1],PARSE_SEARCH_ID));   
   //搜索本地库
  // var_dump(YUN::parse("遇龙",PARSE_VOD)); 
 
@@ -262,7 +264,7 @@ class YUN {
                     $vodurl="";
                     $xml = simplexml_load_string($html);
                     foreach ($xml->list->video->dl->dd as $video) {
-                        $flag = (string) $video[flag];
+                        $flag = (string) $video['flag'];
 
                         $flag_name = sizeof($xml->list->video->dl->dd) == 1 ? $api[$from]['name'] : $flag;
 
@@ -401,21 +403,41 @@ class YUN {
       
         if ($data) {
             
-            if (substr(trim($data), 0,1)!=='<') {
+            if (substr(trim($data), 0,1)==='{') {
 
                 $json = json_decode($data);
+
+                if (json_last_error() !== JSON_ERROR_NONE) {
+                    $videoinfo['success'] = 0;
+                    $videoinfo['code'] = 404;
+              return $videoinfo;
+
+              }
+
                 $img = $json->list[0]->vod_pic;
                 $name = $json->list[0]->vod_name;
 
                 //// echo $api."?ac=videolist&ids=".$id;
                 //  var_dump($json);
 
-                foreach ($json->list as $video) {
-                    $flag = $video->vod_play_from;
-                    $flag_name = sizeof($json->list) == 1 ? $api_name : $flag;
-                    $vod = explode("#", $video->vod_play_url);
 
-                    /*     自动修复影片数据       */
+
+                foreach ($json->list as $video) {
+                   
+                    $note=$video->vod_play_note;
+                    
+
+                    $flags=explode($note, $video->vod_play_from);
+                 
+                    $vods= explode($note, $video->vod_play_url);
+
+                  
+                    foreach ($vods  as $i => $vod_play_url) {
+
+                        $flag=$flags[$i];
+                        $flag_name = (sizeof($json->list) == 1 && sizeof($flags) == 1 )? $api_name : $flag;
+                        $vod = explode("#", $vod_play_url);
+                         /*     自动修复影片数据       */
                     $vlist = explode("$", $vod[0]);
                     if (sizeof($vlist) < 3) {
                         foreach ($vod as &$mov) {
@@ -431,8 +453,16 @@ class YUN {
                     if ($YUN_CONFIG["flag_filter"] == "" || preg_match('/' . $YUN_CONFIG["flag_filter"] . "/i", $flag)) {
                         $info[] = array('flag' => $flag, 'flag_name' => $flag_name, 'site' => 0, 'part' => sizeof($vod), 'video' => $vod,);
                     }
+
+                    }
+
                 }
-            } else if(substr(trim($data), 0,1)!=='{'){
+
+
+          
+
+
+            } else if(substr(trim($data), 0,1)==='<'){
 
                 $xml = simplexml_load_string($data);
                 $img = (string) $xml->list->video->pic ?? '';

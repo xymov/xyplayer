@@ -441,7 +441,7 @@ switch ($type) {
             'off' => filter_input(INPUT_POST, 'RESOURCE_OFF'),
             'name' => trim(filter_input(INPUT_POST, 'RESOURCE_NAME')),
             'url' => filter_input(INPUT_POST, 'RESOURCE_URL'),
- 
+            'type' => filter_input(INPUT_POST, 'RESOURCE_TYPE'), 
              );
            $info['m'] = "添加成功";
            
