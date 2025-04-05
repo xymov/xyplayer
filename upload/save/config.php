@@ -832,12 +832,6 @@ $CONFIG=array (
       'url' => 'https://collect.wolongzyw.com/api.php/provide/vod/',
       'off' => '1',
     ),
-    2 => 
-    array (
-      'name' => '香奶儿',
-      'url' => 'https://www.gdlsp.com/api/xml.php',
-      'off' => '1',
-    ),
   ),
   'vod' => 
   array (

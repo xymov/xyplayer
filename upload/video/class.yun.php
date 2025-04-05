@@ -15,7 +15,7 @@ require_once APP_PATH . 'save/yun.data.php';
 
 define('PARSE_VOD', 0);define('PARSE_URL', 1);define('PARSE_NAME',2);define('PARSE_SEARCH_ID',3);define('PARSE_SEARCH_NAME',4);
 
-
+ 
 
 if(DEBUG){
  /*    */
@@ -426,12 +426,17 @@ class YUN {
                    
                     $note=$video->vod_play_note;
                     
+                    if($note==''){
+                        $flags[]=$video->vod_play_from;
+                        $vods[]=$video->vod_play_url;
 
-                    $flags=explode($note, $video->vod_play_from);
-                 
-                    $vods= explode($note, $video->vod_play_url);
-
+                    }else{
+                        $flags=explode($note, $video->vod_play_from);
+                        $vods= explode($note, $video->vod_play_url);
+                    }
                   
+
+               
                     foreach ($vods  as $i => $vod_play_url) {
 
                         $flag=$flags[$i];
