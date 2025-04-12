@@ -97,7 +97,7 @@ if ($tp == 'getnum') {
     exit;
 }
 if ($tp == 'set') {
-    setcookie("url_num", $line, time() + 3600 * timecookie);
+    setcookie("url_num", $line, time() + 3600 * $timecookie);
     exit;
 }
 if ($tp == 'getset') {
